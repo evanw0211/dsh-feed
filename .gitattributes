@@ -1,0 +1,8 @@
+# 仓库里的源码一律 LF。没有这一行时，core.autocrlf 会在 checkout 时把
+# 所有 .js 改成 CRLF：一次 checkout 就制造出 22 文件的假 diff，
+# 也让「本地文件」和「仓库内容」不再是同一个字节序列。
+* text=auto eol=lf
+
+# 这两个是给 Git 看的元数据，不要被当成文本规范化
+*.png binary
+*.db binary
