@@ -25,7 +25,8 @@ DSH Host 插件 `@local/dsh-feed`，**零依赖**（只用 Node 内置模块：`
 // <DSH_HOME>/profiles/<profile>/package.json
 {
   "dsh": { "profile": { "bundles": ["...", "@local/dsh-feed"] } },
-  "dependencies": { "@local/dsh-feed": "link:C:/Users/25849/Documents/deepseek-harness/default-workspace/dsh-feed" }
+  // <仓库绝对路径> = 本目录
+  "dependencies": { "@local/dsh-feed": "link:<仓库绝对路径>" }
 }
 ```
 
@@ -312,11 +313,14 @@ dsh-feed/
 
 ## 相关文档
 
-完整设计文档在**本仓库之外**的 `../feedwatch/`（`DESIGN.md`、`HANDOFF*.md`、`VERIFICATION.md`、`MEASUREMENTS.md`）：
+完整设计文档**不在本仓库里**（它们至今没有版本控制，这是本项目的一个已知缺口），在开发机的 `../feedwatch/` 目录中：
 
-- [DESIGN.md](../feedwatch/DESIGN.md) —— 设计全文、schema、失败模式、验证清单
-- [HANDOFF-review.md](../feedwatch/HANDOFF-review.md) —— 一次完整代码审查的发现（F1–F5，`dev/review-fixes-probe.mjs` 钉的就是它）
-- [VERIFICATION.md](../feedwatch/VERIFICATION.md) —— 装机验证记录
+| 文档 | 内容 |
+|---|---|
+| `DESIGN.md` | 设计全文、schema、失败模式、验证清单 |
+| `HANDOFF-review.md` | 一次完整代码审查的发现（F1–F5） |
+| `VERIFICATION.md` | 装机验证记录 |
+| `MEASUREMENTS.md` | 30 个源的 Hub / 缓存 / 更新间隔实测 |
 
 > ⚠️ **这些文档不在本仓库的版本控制里**，而且 DESIGN.md 的部分内容停在 2026-09-30，已被后续修复推翻。已知两处：§15 说「`mean_gap / 3` 的下限会顶破 `max_interval`、`max_interval_seconds` 不是硬上限」——**当前代码里它是硬上限**（源级边界生效，最后一步夹紧必做；实测 Rust Blog 的平均到达间隔 3.29 天，`mean_gap / 3` ≈ 26h > 24h 上限，运行中的 `interval_sec` 正是 `86400` 而不是文档里的 32h）；同节的「已修、尚未生效」两处缺陷也早已生效。**以代码和 `npm test` 为准。**
 

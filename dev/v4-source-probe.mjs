@@ -20,7 +20,17 @@
 import { pathToFileURL } from 'node:url'
 import { deliverToSession, SOURCE_KIND } from '../lib/deliver.js'
 
-const ASAR = 'C:/Users/25849/AppData/Local/Programs/DeepSeek Harness/resources/app.asar'
+const path = process.getBuiltinModule('node:path')
+
+/**
+ * 装机内的 app.asar。
+ *
+ * 原来是写死的本机路径 —— 两个问题:换台机器就得改代码,而且这条路径把 Windows
+ * 用户名一起暴露了(本仓库是公开的)。改成从 `process.execPath` 反推:
+ * 按文件头的方式用 `ELECTRON_RUN_AS_NODE=1` 跑时,它就是 Electron 可执行文件本身,
+ * 同级的 `resources/app.asar` 就是要找的东西。装机位置特殊时用 `DSH_ASAR` 覆盖。
+ */
+const ASAR = process.env.DSH_ASAR ?? `${path.dirname(process.execPath)}/resources/app.asar`
 const FORMAT_PKG = `${ASAR}/dsh/node_modules/@deepseek-ai/dsh-session-format-v3-to-v4/lib/index.js`
 const SESSION_PKG = `${ASAR}/dsh/node_modules/@deepseek-ai/dsh-session/lib/index.js`
 const { assertV4RowAdmission } = await import(pathToFileURL(FORMAT_PKG).href)
