@@ -1,0 +1,17 @@
+# 依赖（本插件零依赖，只是防止 profile 的 link 安装意外落进来）
+node_modules/
+
+# 运行期产物：真正的状态库在 $DSH_HOME/dsh-feed/，不在这个仓库里。
+# 这里排除的是「有人在本目录里跑过 dev/probe，顺手开出来的库」以及损坏备份。
+*.db
+*.db-wal
+*.db-shm
+*.corrupt-*
+*.log
+
+# dev/ 里探针脚本的 stdout 重定向产物（0 字节残留，不属于源码）
+dev/inspect.out
+
+# 编辑器 / 系统
+.DS_Store
+Thumbs.db
